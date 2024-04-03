@@ -41,10 +41,13 @@ for season_id in body['list']:
 	pdetail = ''
 	#data = gzip.GzipFile(fileobj=urllib.request.urlopen(req)).read()
 	#content = data.decode("utf-8")
-	with urllib.request.urlopen(req) as res:
+	try:
+		res = urllib.request.urlopen(req)
 		pdetail = json.load(res)
 		with open('Pokemon_'+season_id+'_'+str(rst)+'_'+str(ts2)+'.json', "w") as outfile:
 			json.dump(pdetail, outfile)
+	except:
+		print("POKEMON issue with season_id "+season_id)
 #end getting pokémon
 
 #getting trainers
@@ -52,31 +55,36 @@ for season_id in body['list']:
 	rst = body['list'][season_id]['rst']
 	ts1 = body['list'][season_id]['ts1']
 	ts2 = body['list'][season_id]['ts2']
-	for i in range(1, 2):
-		url = f'https://resource.pokemon-home.com/battledata/ranking/scvi/{season_id}/{rst}/{ts1}/traner-{i}'
-		req = urllib.request.Request(url, headers=headers)
-		req.add_header('Accept-encoding', 'gzip')
-		pdetail = ''
-		data = gzip.GzipFile(fileobj=urllib.request.urlopen(req)).read()
-		content = data.decode("utf-8")
-		pdetail = json.loads(content)
-		with open('Trainer_'+season_id+'_'+str(rst)+'_'+str(ts1)+'_'+str(i)+'.json', "w") as outfile:
-			json.dump(pdetail, outfile)
-
+	try:
+		for i in range(1, 2):
+			url = f'https://resource.pokemon-home.com/battledata/ranking/scvi/{season_id}/{rst}/{ts1}/traner-{i}'
+			req = urllib.request.Request(url, headers=headers)
+			req.add_header('Accept-encoding', 'gzip')
+			pdetail = ''
+			data = gzip.GzipFile(fileobj=urllib.request.urlopen(req)).read()
+			content = data.decode("utf-8")
+			pdetail = json.loads(content)
+			with open('Trainer_'+season_id+'_'+str(rst)+'_'+str(ts1)+'_'+str(i)+'.json', "w") as outfile:
+				json.dump(pdetail, outfile)
+	except:
+		print("TRAINERS issue with season_id "+season_id)
 #getting Pokémon rankings
 for season_id in body['list']:
 	rst = body['list'][season_id]['rst']
 	ts1 = body['list'][season_id]['ts1']
 	ts2 = body['list'][season_id]['ts2']
-	for i in range(1, 6):
-		url = f'https://resource.pokemon-home.com/battledata/ranking/scvi/{season_id}/{rst}/{ts2}/pdetail-{i}'
-		req = urllib.request.Request(url, headers=headers)
-		#req.add_header('Accept-encoding', 'gzip')
-		pdetail = ''
-		#data = gzip.GzipFile(fileobj=urllib.request.urlopen(req)).read()
-		#content = data.decode("utf-8")
-		with urllib.request.urlopen(req) as res:
-			pdetail = json.load(res)
-			#with open(season_id+'_'+str(rst)+'_'+str(ts2)+'_'+str(i)+'.json', "w") as outfile:
-			with open(season_id+'_'+str(rst)+'_'+str(ts1)+'_'+str(i)+'.json', "w") as outfile:
-				json.dump(pdetail, outfile)
+	try:
+		for i in range(1, 6):
+			url = f'https://resource.pokemon-home.com/battledata/ranking/scvi/{season_id}/{rst}/{ts2}/pdetail-{i}'
+			req = urllib.request.Request(url, headers=headers)
+			#req.add_header('Accept-encoding', 'gzip')
+			pdetail = ''
+			#data = gzip.GzipFile(fileobj=urllib.request.urlopen(req)).read()
+			#content = data.decode("utf-8")
+			with urllib.request.urlopen(req) as res:
+				pdetail = json.load(res)
+				#with open(season_id+'_'+str(rst)+'_'+str(ts2)+'_'+str(i)+'.json', "w") as outfile:
+				with open(season_id+'_'+str(rst)+'_'+str(ts1)+'_'+str(i)+'.json', "w") as outfile:
+					json.dump(pdetail, outfile)
+	except:
+		print("RANKINGS issue with season_id "+season_id)
